@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1080871577815",
+    "firebase_url": "https://racetheworld-ef033.firebaseio.com",
+    "project_id": "racetheworld-ef033",
+    "storage_bucket": "racetheworld-ef033.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1080871577815:android:f0dbd51132b5d2c1",
+        "android_client_info": {
+          "package_name": "com.example.mark.racetheworld"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1080871577815-fsbhljgqrgscqai681k69lusbrtmjhi5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mark.racetheworld",
+            "certificate_hash": "1bbf026ae921b76387bdac923e4b9f79055830fc"
+          }
+        },
+        {
+          "client_id": "1080871577815-a5k116nmgmn4b783o6bc7tqloq1mg1j5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAXhKHEsYGefWObSwbTpLUv2QA1uEE6EY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1080871577815-a5k116nmgmn4b783o6bc7tqloq1mg1j5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
