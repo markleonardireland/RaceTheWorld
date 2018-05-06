@@ -1,7 +1,10 @@
 package com.example.mark.racetheworld.Activities;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,7 +28,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 public class GoogleSignIn extends AppCompatActivity {
-
+    protected static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     SignInButton button;
     FirebaseAuth mAuth;
     private final static int RC_SIGN_IN = 2;
@@ -44,6 +47,18 @@ public class GoogleSignIn extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_google_sign_in);
+
+        int permissionCheck = ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION);
+
+
+        //TODO: Hande the event that the user denies access to GPS
+        //If the permission is denied we have to request it.
+        if (permissionCheck == PackageManager.PERMISSION_DENIED){
+            ActivityCompat.requestPermissions(this,
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+        }
+
 
         button = (SignInButton) findViewById(R.id.googleBtn);
         mAuth = FirebaseAuth.getInstance();
