@@ -72,7 +72,7 @@ public class SearchUser extends AppCompatActivity {
     @Override
     public void onStop() {
         super.onStop();
-        mAdapter.stopListening();
+        //mAdapter.stopListening();
     }
 
 
@@ -82,7 +82,7 @@ public class SearchUser extends AppCompatActivity {
         Log.e("seaarching for ", searchText);
         Toast.makeText(SearchUser.this, "Started Search", Toast.LENGTH_LONG).show();
 
-        Query firebaseSearchQuery = mUserDatabase.orderByChild("name");
+        Query firebaseSearchQuery = mUserDatabase.orderByChild("name").startAt(searchText).endAt(searchText + "\uf8ff");
 
         FirebaseRecyclerOptions<User> options =
                 new FirebaseRecyclerOptions.Builder<User>()
@@ -94,6 +94,7 @@ public class SearchUser extends AppCompatActivity {
             @Override
             public UsersViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
             {
+                Log.e("onCreateViewHolder: ", "Creating View Holder");
                 View view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.list_layout, parent, false);
 
@@ -107,6 +108,7 @@ public class SearchUser extends AppCompatActivity {
         };
 
         Log.e("firebaseUserSearch: ", "Attaching adapter");
+        mAdapter.startListening();
         mResultList.setAdapter(mAdapter);
 
     }
@@ -129,8 +131,6 @@ public class SearchUser extends AppCompatActivity {
 
             TextView user_name = (TextView) mView.findViewById(R.id.name_text);
             TextView races_won = (TextView) mView.findViewById(R.id.races_won);
-
-
 
             user_name.setText(userName);
             races_won.setText(String.valueOf(racesWon));
