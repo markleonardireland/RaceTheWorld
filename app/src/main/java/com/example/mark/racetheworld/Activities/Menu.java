@@ -47,7 +47,7 @@ public class Menu extends AppCompatActivity implements NavigationView.OnNavigati
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new ProfileFragment()).commit();
                 break;
-             case R.id.nav_profile:
+             case R.id.nav_challenge:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new ChallengeFragment()).commit();
                 break;
