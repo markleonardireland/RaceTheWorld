@@ -8,7 +8,6 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -19,16 +18,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".Activities.GoogleLogOut" />
-        <activity android:name=".Activities.RaceActivity"></activity>
+        <activity android:name=".Activities.RaceActivity" />
         <activity
             android:name=".Activities.Menu"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".Activities.SearchUser"
-            android:windowSoftInputMode="adjustPan">
-        </activity>
-
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activities.SearchUser"
+            android:windowSoftInputMode="adjustPan"></activity>
+        <activity android:name=".Activities.PreChallengeActivity"></activity>
     </application>
 
 </manifest>

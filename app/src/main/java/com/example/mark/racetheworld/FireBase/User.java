@@ -5,6 +5,7 @@ import java.util.Map;
 public class User {
     public String name;
     public String email;
+    public String photoURL;
     public int totalDistance;
     public int totalTime;
     public int racesWon;
@@ -16,7 +17,7 @@ public class User {
 
     }
 
-    public User(String name, String email){
+    public User(String name, String email, String photoURL){
         this.name = name;
         this.email = email;
         this.totalDistance = 0;
@@ -25,5 +26,6 @@ public class User {
         this.racesDone = 0;
         this.currentDistance = 0.0;
         this.currentTime = 0;
+        this.photoURL = photoURL;
     }
 }

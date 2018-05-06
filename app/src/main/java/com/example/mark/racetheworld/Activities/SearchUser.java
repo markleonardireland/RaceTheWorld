@@ -1,6 +1,7 @@
 package com.example.mark.racetheworld.Activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -103,7 +104,7 @@ public class SearchUser extends AppCompatActivity {
             @Override
             protected void onBindViewHolder(UsersViewHolder viewHolder, int position, User model) {
                 Log.e("onBindViewHolder", model.name);
-                viewHolder.setDetails(getApplicationContext(), model.name, model.racesWon);
+                viewHolder.setDetails(getApplicationContext(), model.name, model.racesWon, model.email);
             }
         };
 
@@ -119,21 +120,42 @@ public class SearchUser extends AppCompatActivity {
     public static class UsersViewHolder extends RecyclerView.ViewHolder {
 
         View mView;
+        String mEmail;
+        String mName;
+        int mRacesWon;
 
         public UsersViewHolder(View itemView) {
             super(itemView);
 
             mView = itemView;
 
+            Button btn = mView.findViewById(R.id.challenge_button);
+            btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Log.e("Button status: ", mEmail);
+                    // Send to the preActivity with the email
+                    Intent intent = new Intent(mView.getContext(), PreChallengeActivity.class);
+                    intent.putExtra("email", mEmail);
+                    mView.getContext().startActivity(intent);
+
+
+                }
+            });
         }
 
-        public void setDetails(Context ctx, String userName, int racesWon){
+        public void setDetails(Context ctx, String userName, int racesWon, String email){
 
             TextView user_name = (TextView) mView.findViewById(R.id.name_text);
             TextView races_won = (TextView) mView.findViewById(R.id.races_won);
 
-            user_name.setText(userName);
-            races_won.setText(String.valueOf(racesWon));
+            mEmail = email;
+            mRacesWon = racesWon;
+            mName = userName;
+
+            user_name.setText(mName);
+            races_won.setText(String.valueOf(mRacesWon));
 
         }
 

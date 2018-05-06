@@ -38,8 +38,9 @@ public class FirebaseDBHelper {
                     FirebaseAuth auth = FirebaseAuth.getInstance();
                     FirebaseUser currentUser = auth.getCurrentUser();
                     String uid = currentUser.getUid();
+                    String photoURL = currentUser.getPhotoUrl().toString();
                     Log.e("Creating new user: ", uid);
-                    User newUser = new User(currentUser.getDisplayName(), currentUser.getEmail());
+                    User newUser = new User(currentUser.getDisplayName(), currentUser.getEmail(), photoURL);
 
 
                     // Get the reference for users
