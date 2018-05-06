@@ -9,11 +9,13 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/ic_launcher_round" />
+        android:id="@+id/user_profile"
+        android:layout_width="86dp"
+        android:layout_height="84dp"
+        android:src="@drawable/mockprofile" />
 
     <TextView
+        android:id="@+id/user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
@@ -21,6 +23,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
+        android:id="@+id/user_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="markleonardireland@gmail.com" />

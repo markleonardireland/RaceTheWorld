@@ -88,6 +88,10 @@ public class Menu extends AppCompatActivity implements NavigationView.OnNavigati
                  Intent intent = new Intent(Menu.this, SearchUser.class);
                  startActivity(intent);
                 break;
+            case R.id.nav_race:
+                Intent intent2 = new Intent(Menu.this, RaceActivity.class);
+                startActivity(intent2);
+                break;
             case R.id.nav_logout:
                 mAuth = FirebaseAuth.getInstance();
                 mAuth.signOut();
