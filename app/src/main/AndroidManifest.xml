@@ -16,11 +16,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".Activities.GoogleLogOut" />
         <activity
             android:name=".Activities.Menu"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".Activities.SearchUser"></activity>
+        <activity android:name=".Activities.GoogleLogOut"></activity>
     </application>
 
 </manifest>
