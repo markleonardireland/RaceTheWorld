@@ -122,7 +122,7 @@ public class SearchUser extends AppCompatActivity {
         View mView;
         String mEmail;
         String mName;
-        int mRacesWon;
+        long mRacesWon;
 
         public UsersViewHolder(View itemView) {
             super(itemView);
@@ -145,7 +145,7 @@ public class SearchUser extends AppCompatActivity {
             });
         }
 
-        public void setDetails(Context ctx, String userName, int racesWon, String email){
+        public void setDetails(Context ctx, String userName, long racesWon, String email){
 
             TextView user_name = (TextView) mView.findViewById(R.id.name_text);
             TextView races_won = (TextView) mView.findViewById(R.id.races_won);

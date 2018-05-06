@@ -59,4 +59,5 @@ public class FirebaseDBHelper {
         userRef.child("currentDistance").setValue(distance);
         userRef.child("currentTime").setValue(time);
     }
+
 }

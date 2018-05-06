@@ -6,12 +6,12 @@ public class User {
     public String name;
     public String email;
     public String photoURL;
-    public int totalDistance;
-    public int totalTime;
-    public int racesWon;
-    public int racesDone;
+    public long totalDistance;
+    public long totalTime;
+    public long racesWon;
+    public long racesDone;
     public double currentDistance;
-    public int currentTime;
+    public long currentTime;
 
     public User(){
 
