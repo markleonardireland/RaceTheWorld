@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1080871577815-b5i6n587hbdhve54sll98knm9t229ac4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mark.racetheworld",
+            "certificate_hash": "7cf8e357728f25cab66adb3810a2c2349fdfecc7"
+          }
+        },
+        {
           "client_id": "1080871577815-fsbhljgqrgscqai681k69lusbrtmjhi5.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
