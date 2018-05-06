@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.mark.racetheworld.FireBase.FirebaseDBHelper;
 import com.example.mark.racetheworld.Fragments.ChallengeFragment;
 import com.example.mark.racetheworld.Fragments.ProfileFragment;
 import com.example.mark.racetheworld.R;
@@ -33,6 +34,8 @@ public class Menu extends AppCompatActivity implements NavigationView.OnNavigati
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
+
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -48,7 +51,13 @@ public class Menu extends AppCompatActivity implements NavigationView.OnNavigati
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
+
+
         mGoogleApiClient.connect();
+
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseDBHelper helper = new FirebaseDBHelper();
+        helper.createUserIfNotExists(mAuth.getCurrentUser().getUid());
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -76,8 +85,8 @@ public class Menu extends AppCompatActivity implements NavigationView.OnNavigati
                         new ProfileFragment()).commit();
                 break;
              case R.id.nav_challenge:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new ChallengeFragment()).commit();
+                 Intent intent = new Intent(Menu.this, SearchUser.class);
+                 startActivity(intent);
                 break;
             case R.id.nav_logout:
                 mAuth = FirebaseAuth.getInstance();

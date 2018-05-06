@@ -5,7 +5,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Button;
 import android.widget.TextView;
@@ -14,6 +17,7 @@ import android.widget.Toast;
 import com.example.mark.racetheworld.FireBase.User;
 import com.example.mark.racetheworld.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
@@ -24,6 +28,7 @@ public class SearchUser extends AppCompatActivity {
     private Button mSearchBtn;
 
     private RecyclerView mResultList;
+    private FirebaseRecyclerAdapter mAdapter;
 
     private DatabaseReference mUserDatabase;
 
@@ -42,6 +47,8 @@ public class SearchUser extends AppCompatActivity {
         mResultList.setHasFixedSize(true);
         mResultList.setLayoutManager(new LinearLayoutManager(this));
 
+        firebaseUserSearch("");
+
         mSearchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -53,32 +60,54 @@ public class SearchUser extends AppCompatActivity {
             }
         });
 
+
+
     }
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAdapter.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mAdapter.stopListening();
+    }
+
+
 
     private void firebaseUserSearch(String searchText) {
 
+        Log.e("seaarching for ", searchText);
         Toast.makeText(SearchUser.this, "Started Search", Toast.LENGTH_LONG).show();
 
-        Query firebaseSearchQuery = mUserDatabase.orderByChild("name").startAt(searchText).endAt(searchText + "\uf8ff");
+        Query firebaseSearchQuery = mUserDatabase.orderByChild("name");
 
-        FirebaseRecyclerAdapter<User, UsersViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<User, UsersViewHolder>(
+        FirebaseRecyclerOptions<User> options =
+                new FirebaseRecyclerOptions.Builder<User>()
+                        .setQuery(firebaseSearchQuery, User.class)
+                        .build();
 
-                User.class,
-                R.layout.list_layout,
-                UsersViewHolder.class,
-                firebaseSearchQuery
-
-        ) {
+        mAdapter = new FirebaseRecyclerAdapter<User, UsersViewHolder>(options)
+        {
             @Override
-            protected void populateViewHolder(UsersViewHolder viewHolder, User model, int position) {
+            public UsersViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+            {
+                View view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.list_layout, parent, false);
 
-
+                return new UsersViewHolder(view);
+            }
+            @Override
+            protected void onBindViewHolder(UsersViewHolder viewHolder, int position, User model) {
+                Log.e("onBindViewHolder", model.name);
                 viewHolder.setDetails(getApplicationContext(), model.name, model.racesWon);
-
             }
         };
 
-        mResultList.setAdapter(firebaseRecyclerAdapter);
+        Log.e("firebaseUserSearch: ", "Attaching adapter");
+        mResultList.setAdapter(mAdapter);
 
     }
 
@@ -104,7 +133,7 @@ public class SearchUser extends AppCompatActivity {
 
 
             user_name.setText(userName);
-            races_won.setText(racesWon);
+            races_won.setText(String.valueOf(racesWon));
 
         }
 

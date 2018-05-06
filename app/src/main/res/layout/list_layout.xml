@@ -23,7 +23,6 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="110dp"
         android:layout_marginTop="20dp"
-        android:text="Mark Leonard"
         android:textColor="#666666"
         android:textSize="22sp" />
 
@@ -33,7 +32,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/name_text"
-        android:layout_marginTop="60dp"
-        android:text="Races Won: 2" />
+        android:layout_marginTop="60dp" />
 
 </RelativeLayout>
