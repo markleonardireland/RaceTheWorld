@@ -12,28 +12,32 @@
     tools:context="com.example.mark.racetheworld.Activities.RaceActivity">
 
     <TextView
+        android:id="@+id/latitude_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Latitude: "
-        android:id="@+id/latitude_text" />
+        android:textSize="20sp" />
 
     <TextView
+        android:id="@+id/longtitude_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Longtitude: "
-        android:id="@+id/longtitude_text" />
+        android:textSize="20sp" />
+
 
     <TextView
+        android:id="@+id/distance_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Distance: "
-        android:id="@+id/distance_text" />
-
+        android:textSize="20sp" />
 
     <Button
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:text="STOP RUN"
+        android:id="@+id/run_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="130dp"
         android:onClick="stopRunButtonCallback"
-        android:id="@+id/run_button"/>
+        android:text="Stop Run" />
 </LinearLayout>
