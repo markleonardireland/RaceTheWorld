@@ -67,16 +67,21 @@ public class PreChallengeActivity extends AppCompatActivity {
                     opponentWins.setText(String.valueOf(mOpponent.racesWon));
                     opponentDistance.setText(String.valueOf(mOpponent.totalDistance));
 
+
                     // Now that we have the information begin to check if the other use r is ready
                     if (mOpponent.ready == true){
                         onUserReady();
-
                     }
                 }
 
             }
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {
+                mOpponent = dataSnapshot.getValue(User.class);
+                Log.e("PreChallengeActivity: ", "onChildChanged");
+                if (mOpponent.ready == true){
+                    onUserReady();
+                }
             }
 
             @Override
