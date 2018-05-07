@@ -76,6 +76,7 @@ public class GoogleSignIn extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if (firebaseAuth.getCurrentUser() != null){
                     startActivity(new Intent(GoogleSignIn.this, Menu.class));
+                    finish();
                 }
             }
         };
