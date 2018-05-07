@@ -60,6 +60,11 @@ public class FirebaseDBHelper {
         userRef.addListenerForSingleValueEvent(eventListener);
     }
 
+    public void resetReadyState(String uid)
+    {
+        databaseReference.child("Users").child(uid).child("Ready").setValue(false);
+    }
+
     public void updateCurrentStats(double distance, long time){
         DatabaseReference userRef = this.databaseReference.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
         userRef.child("currentDistance").setValue(distance);

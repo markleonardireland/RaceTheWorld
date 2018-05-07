@@ -58,6 +58,7 @@ public class Menu extends AppCompatActivity implements NavigationView.OnNavigati
         mAuth = FirebaseAuth.getInstance();
         FirebaseDBHelper helper = new FirebaseDBHelper();
         helper.createUserIfNotExists(mAuth.getCurrentUser().getUid());
+        helper.resetReadyState(mAuth.getCurrentUser().getUid());
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
