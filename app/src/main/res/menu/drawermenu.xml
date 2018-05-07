@@ -12,6 +12,10 @@
             android:icon="@drawable/ic_directions_run_black_24dp"
             android:title="Challenge" />
         <item
+            android:id="@+id/nav_my_challenges"
+            android:icon="@drawable/ic_directions_run_black_24dp"
+            android:title="My Challenges" />
+        <item
             android:id="@+id/nav_race"
             android:icon="@drawable/ic_directions_run_black_24dp"
             android:title="Race" />
