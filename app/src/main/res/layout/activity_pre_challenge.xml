@@ -32,8 +32,7 @@
         android:layout_height="131dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="79dp"
-        app:srcCompat="@drawable/mockprofile" />
+        android:layout_marginTop="81dp" />
 
     <TextView
         android:id="@+id/opponent_name"
@@ -42,7 +41,6 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="238dp"
-        android:text="Mark Leonard"
         android:textColor="@color/white"
         android:textSize="20sp" />
 
@@ -53,7 +51,6 @@
         android:layout_alignParentBottom="true"
         android:layout_alignStart="@+id/opponent_dis"
         android:layout_marginBottom="252dp"
-        android:text="26"
         android:textColor="@color/white"
         android:textSize="20sp" />
 
@@ -85,7 +82,6 @@
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/opponent_name"
         android:layout_alignTop="@+id/total_dis_text"
-        android:text="200"
         android:textAllCaps="true"
         android:textColor="@color/white"
         android:textSize="20sp" />

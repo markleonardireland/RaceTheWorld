@@ -12,6 +12,7 @@ public class User {
     public long racesDone;
     public double currentDistance;
     public long currentTime;
+    public Boolean ready;
 
     public User(){
 
@@ -20,6 +21,7 @@ public class User {
     public User(String name, String email, String photoURL){
         this.name = name;
         this.email = email;
+        this.ready = false;
         this.totalDistance = 0;
         this.totalTime = 0;
         this.racesWon = 0;

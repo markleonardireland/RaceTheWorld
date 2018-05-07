@@ -1,11 +1,17 @@
 package com.example.mark.racetheworld.Activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.example.mark.racetheworld.FireBase.FirebaseDBHelper;
 import com.example.mark.racetheworld.FireBase.User;
 import com.example.mark.racetheworld.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -16,12 +22,16 @@ import com.google.firebase.database.ValueEventListener;
 
 public class PreChallengeActivity extends AppCompatActivity {
     protected String mOppEmail;
+    protected User mOpponent;
+    protected FirebaseDBHelper mHelper;
+    protected String mOpponentUid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pre_challenge);
         mOppEmail = getIntent().getStringExtra("email");
+        mHelper = new FirebaseDBHelper();
 
         Log.e("PreChallengeActivity: ", "Opponents Email is : " + mOppEmail);
 
@@ -38,11 +48,30 @@ public class PreChallengeActivity extends AppCompatActivity {
 
                 if (dataSnapshot.exists())
                 {
-                    System.out.println(dataSnapshot.toString());
-                    System.out.println(dataSnapshot.getValue());
-                    User user = dataSnapshot.getValue(User.class);
-                    System.out.println(user.name);
-                    Log.e("Users email: ", user.email);
+                    mOpponent = dataSnapshot.getValue(User.class);
+                    Log.e("Users email: ", mOpponent.email);
+                    Log.e("Users UID: ", dataSnapshot.getKey());
+
+                    mOpponentUid = dataSnapshot.getKey();
+
+                    // Update the UI with the opponent information
+
+                    ImageView profileImage = (ImageView) findViewById(R.id.opponent_profile);
+                    mHelper.setImageFromUrl(profileImage, mOpponent.photoURL);
+
+                    TextView opponentName = (TextView) findViewById(R.id.opponent_name);
+                    TextView opponentWins = (TextView) findViewById(R.id.opponent_wins);
+                    TextView opponentDistance = (TextView) findViewById(R.id.opponent_dis);
+
+                    opponentName.setText(mOpponent.name);
+                    opponentWins.setText(String.valueOf(mOpponent.racesWon));
+                    opponentDistance.setText(String.valueOf(mOpponent.totalDistance));
+
+                    // Now that we have the information begin to check if the other use r is ready
+                    if (mOpponent.ready == true){
+                        onUserReady();
+
+                    }
                 }
 
             }
@@ -64,5 +93,12 @@ public class PreChallengeActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void onUserReady()
+    {
+        Intent intent = new Intent(PreChallengeActivity.this, RaceActivity.class);
+        intent.putExtra("oppuid", mOpponentUid);
+        startActivity(intent);
     }
 }
