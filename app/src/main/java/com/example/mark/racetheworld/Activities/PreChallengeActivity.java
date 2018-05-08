@@ -39,6 +39,7 @@ public class PreChallengeActivity extends AppCompatActivity {
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("Users");
         Query query = userRef.orderByChild("email").equalTo(mOppEmail);
 
+        mHelper.setReadyState(FirebaseAuth.getInstance().getCurrentUser().getUid());
         query.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
