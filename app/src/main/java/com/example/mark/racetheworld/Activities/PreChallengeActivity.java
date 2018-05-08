@@ -25,6 +25,8 @@ public class PreChallengeActivity extends AppCompatActivity {
     protected User mOpponent;
     protected FirebaseDBHelper mHelper;
     protected String mOpponentUid;
+    protected ChildEventListener mEventListener;
+    protected Query mUserQuery;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,18 +39,17 @@ public class PreChallengeActivity extends AppCompatActivity {
 
         // Do a query for the opponent using email
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("Users");
-        Query query = userRef.orderByChild("email").equalTo(mOppEmail);
+        mUserQuery = userRef.orderByChild("email").equalTo(mOppEmail);
 
         mHelper.setReadyState(FirebaseAuth.getInstance().getCurrentUser().getUid());
-        query.addChildEventListener(new ChildEventListener() {
+        mEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
                 // Get the user info who has the email
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
 
-                if (dataSnapshot.exists())
-                {
+                if (dataSnapshot.exists()) {
                     mOpponent = dataSnapshot.getValue(User.class);
                     Log.e("Users email: ", mOpponent.email);
                     Log.e("Users UID: ", dataSnapshot.getKey());
@@ -70,17 +71,17 @@ public class PreChallengeActivity extends AppCompatActivity {
 
 
                     // Now that we have the information begin to check if the other use r is ready
-                    if (mOpponent.ready == true){
+                    if (mOpponent.ready == true) {
                         onUserReady();
                     }
                 }
-
             }
+
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {
                 mOpponent = dataSnapshot.getValue(User.class);
                 Log.e("PreChallengeActivity: ", "onChildChanged");
-                if (mOpponent.ready == true){
+                if (mOpponent.ready == true) {
                     onUserReady();
                 }
             }
@@ -95,17 +96,20 @@ public class PreChallengeActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError error) {
-                // Failed to read value
-
             }
-        });
+        };
+        mUserQuery.addChildEventListener(mEventListener);
+
     }
+
 
     public void onUserReady()
     {
+        Log.e("onUserReady", "Starting another race activity");
         Intent intent = new Intent(PreChallengeActivity.this, RaceActivity.class);
         intent.putExtra("oppuid", mOpponentUid);
         startActivity(intent);
+        mUserQuery.removeEventListener(mEventListener);
         finish();
     }
 }

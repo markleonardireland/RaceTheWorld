@@ -1,5 +1,6 @@
 package com.example.mark.racetheworld.Activities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -67,13 +68,13 @@ public class SearchUser extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        mAdapter.startListening();
     }
 
     @Override
     public void onStop() {
+        Log.e("onDestroy", "Stopped Listening");
         super.onStop();
-        //mAdapter.stopListening();
+        mAdapter.stopListening();
     }
 
 
@@ -139,6 +140,8 @@ public class SearchUser extends AppCompatActivity {
                     Intent intent = new Intent(mView.getContext(), PreChallengeActivity.class);
                     intent.putExtra("email", mEmail);
                     mView.getContext().startActivity(intent);
+                    Activity act = (Activity) mView.getContext();
+
 
 
                 }
@@ -146,7 +149,6 @@ public class SearchUser extends AppCompatActivity {
         }
 
         public void setDetails(Context ctx, String userName, long racesWon, String email){
-
             TextView user_name = (TextView) mView.findViewById(R.id.name_text);
             TextView races_won = (TextView) mView.findViewById(R.id.races_won);
 
@@ -159,10 +161,5 @@ public class SearchUser extends AppCompatActivity {
             races_won.setText(String.valueOf(mRacesWon));
 
         }
-
-
-
-
     }
-
 }
