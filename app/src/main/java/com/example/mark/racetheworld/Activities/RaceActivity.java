@@ -115,7 +115,7 @@ public class RaceActivity extends AppCompatActivity implements GoogleApiClient.C
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                if (dataSnapshot.exists(){
+                if (dataSnapshot.exists()){
                     mOpponent = dataSnapshot.getValue(User.class);
                     updateOppUI();
                 }
@@ -136,7 +136,7 @@ public class RaceActivity extends AppCompatActivity implements GoogleApiClient.C
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        })
+        });
 
 
         //true to automatically start recording data, false to wait for a callback (button press for example)
@@ -176,7 +176,7 @@ public class RaceActivity extends AppCompatActivity implements GoogleApiClient.C
         mOppTimeText.setText(String.valueOf(mOpponent.currentTime));
         mOppDistanceText.setText(String.valueOf(mOpponent.currentDistance));
     }
-    
+
     protected void onStart() {
         mGoogleApiClient.connect();
         super.onStart();
@@ -284,7 +284,7 @@ public class RaceActivity extends AppCompatActivity implements GoogleApiClient.C
 
         Toast.makeText(this, "Location changed",
                 Toast.LENGTH_SHORT).show();
-        updatUserUI();
+        updateOppUI();
     }
 
     protected void startLocationUpdates() {
