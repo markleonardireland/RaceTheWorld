@@ -65,6 +65,11 @@ public class FirebaseDBHelper {
         databaseReference.child("Users").child(uid).child("ready").setValue(false);
     }
 
+    public void setReadyState(String uid)
+    {
+        databaseReference.child("Users").child(uid).child("ready").setValue(true);
+    }
+
     public void updateCurrentStats(double distance, long time){
         DatabaseReference userRef = this.databaseReference.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
         userRef.child("currentDistance").setValue(distance);
