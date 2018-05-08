@@ -106,5 +106,6 @@ public class PreChallengeActivity extends AppCompatActivity {
         Intent intent = new Intent(PreChallengeActivity.this, RaceActivity.class);
         intent.putExtra("oppuid", mOpponentUid);
         startActivity(intent);
+        finish();
     }
 }
