@@ -272,7 +272,7 @@ public class RaceActivity extends AppCompatActivity implements GoogleApiClient.C
 
         Toast.makeText(this, "Location changed",
                 Toast.LENGTH_SHORT).show();
-        updateOppUI();
+        updateUserUI();
     }
 
     protected void startLocationUpdates() {
