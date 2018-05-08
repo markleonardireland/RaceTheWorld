@@ -10,12 +10,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mark.racetheworld.FireBase.FirebaseDBHelper;
+import com.example.mark.racetheworld.FireBase.User;
 import com.example.mark.racetheworld.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import org.w3c.dom.Text;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -36,12 +44,19 @@ public class RaceActivity extends AppCompatActivity implements GoogleApiClient.C
     public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 5000;
     public static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS = UPDATE_INTERVAL_IN_MILLISECONDS / 2;
 
-
+    protected String mOpponentUid;
 
     //TextViews for showing location
     protected TextView mLatitudeText;
     protected TextView mLongitudeText;
     protected TextView mDistanceText;
+    protected TextView mTimeText;
+
+    User mOpponent;
+
+
+    protected TextView mOppDistanceText;
+    protected TextView mOppTimeText;
     protected Boolean mRequestingLocationUpdates;
 
     //Strings
@@ -75,6 +90,7 @@ public class RaceActivity extends AppCompatActivity implements GoogleApiClient.C
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_race);
 
+        mOpponentUid = getIntent().getStringExtra("oppuid");
         runDistance = 0;
         //Set the time the run was started
         timeStart = System.currentTimeMillis()/1000;
@@ -84,6 +100,44 @@ public class RaceActivity extends AppCompatActivity implements GoogleApiClient.C
         mLatitudeText = (TextView) findViewById((R.id.latitude_text));
         mLongitudeText = (TextView) findViewById((R.id.longtitude_text));
         mDistanceText = (TextView) findViewById((R.id.distance_text));
+        mTimeText = (TextView) findViewById(R.id.time_text);
+        mOppTimeText = (TextView) findViewById(R.id.opp_time);
+        mOppDistanceText = (TextView) findViewById(R.id.opp_distance);
+
+
+        // Begin to monitor the opponents details
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("Users").child(mOpponentUid);
+        userRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                if (dataSnapshot.exists(){
+                    mOpponent = dataSnapshot.getValue(User.class);
+                    updateOppUI();
+                }
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        })
+
 
         //true to automatically start recording data, false to wait for a callback (button press for example)
         mRequestingLocationUpdates = true;
@@ -107,7 +161,7 @@ public class RaceActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     //When a location update occurs we need to update the textview (UI) fields with the information
-    private void updateUI(){
+    private void updateUserUI(){
         Log.e(TAG, "UpdateUI called");
         mLatitudeText.setText(String.format("%s: %f", mLatitudeLabel,
                 mCurrentLocation.getLatitude()));
@@ -117,8 +171,12 @@ public class RaceActivity extends AppCompatActivity implements GoogleApiClient.C
                 runDistance));
     }
 
-
-
+    private void updateOppUI(){
+        Log.e("UpdateOppUI: ", "Currently updating UI for Opponent");
+        mOppTimeText.setText(String.valueOf(mOpponent.currentTime));
+        mOppDistanceText.setText(String.valueOf(mOpponent.currentDistance));
+    }
+    
     protected void onStart() {
         mGoogleApiClient.connect();
         super.onStart();
@@ -226,7 +284,7 @@ public class RaceActivity extends AppCompatActivity implements GoogleApiClient.C
 
         Toast.makeText(this, "Location changed",
                 Toast.LENGTH_SHORT).show();
-        updateUI();
+        updatUserUI();
     }
 
     protected void startLocationUpdates() {

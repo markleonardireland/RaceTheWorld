@@ -150,6 +150,7 @@ public class SearchUser extends AppCompatActivity {
             TextView user_name = (TextView) mView.findViewById(R.id.name_text);
             TextView races_won = (TextView) mView.findViewById(R.id.races_won);
 
+
             mEmail = email;
             mRacesWon = racesWon;
             mName = userName;

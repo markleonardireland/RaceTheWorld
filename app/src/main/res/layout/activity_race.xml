@@ -34,25 +34,24 @@
         android:textSize="20sp" />
 
     <TextView
-        android:id="@+id/latitude_text"
+        android:id="@+id/time_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Distance: "
+        android:textSize="20sp" />v
+
+    <TextView
+        android:id="@+id/opp_distance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Latitude: "
         android:textSize="20sp" />
 
     <TextView
-        android:id="@+id/longtitude_text"
+        android:id="@+id/opp_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Longtitude: "
-        android:textSize="20sp" />
-
-
-    <TextView
-        android:id="@+id/distance_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Distance: "
         android:textSize="20sp" />
 
     <Button

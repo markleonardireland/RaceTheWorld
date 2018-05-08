@@ -62,7 +62,7 @@ public class FirebaseDBHelper {
 
     public void resetReadyState(String uid)
     {
-        databaseReference.child("Users").child(uid).child("Ready").setValue(false);
+        databaseReference.child("Users").child(uid).child("ready").setValue(false);
     }
 
     public void updateCurrentStats(double distance, long time){
