@@ -6,7 +6,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.SearchUser">
+    tools:context=".Activities.SearchUser"
+    android:background="@drawable/main_header_second">
+
 
     <TextView
         android:id="@+id/heading_label"
@@ -17,6 +19,7 @@
         android:layout_marginLeft="30dp"
         android:layout_marginTop="30dp"
         android:text="Search Users"
+        android:textColor="@android:color/black"
         android:textSize="24sp" />
 
     <EditText
@@ -30,18 +33,19 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:text=""
-        android:textColor="#999999"
+        android:textColor="@android:color/black"
         android:textSize="16sp" />
 
     <Button
         android:id="@+id/search_btn"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="38dp"
+        android:layout_alignBottom="@+id/search_field"
         android:layout_alignParentEnd="true"
-        android:layout_alignTop="@+id/search_field"
-        android:layout_marginEnd="44dp"
-        android:layout_marginRight="30dp"
-        android:text="Search" />
+        android:layout_marginEnd="37dp"
+        android:background="#014583"
+        android:text="Search"
+        android:textColor="#f58833" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/result_list"

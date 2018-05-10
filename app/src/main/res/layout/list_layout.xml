@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/user_name"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/main_header">
 
     <ImageView
         android:id="@+id/profile_image"
@@ -38,10 +39,12 @@
     <Button
         android:id="@+id/challenge_button"
         android:layout_width="wrap_content"
-        android:layout_height="74dp"
+        android:layout_height="38dp"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_marginEnd="16dp"
-        android:text="Challenge" />
+        android:background="#014583"
+        android:text="Challenge"
+        android:textColor="#f58833" />
 
 </RelativeLayout>
