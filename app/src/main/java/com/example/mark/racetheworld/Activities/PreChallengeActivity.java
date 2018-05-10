@@ -58,12 +58,12 @@ public class PreChallengeActivity extends AppCompatActivity {
 
                     // Update the UI with the opponent information
 
-                    ImageView profileImage = (ImageView) findViewById(R.id.opponent_profile);
+                    ImageView profileImage = (ImageView) findViewById(R.id.user_profile);
                     mHelper.setImageFromUrl(profileImage, mOpponent.photoURL);
 
-                    TextView opponentName = (TextView) findViewById(R.id.opponent_name);
-                    TextView opponentWins = (TextView) findViewById(R.id.opponent_wins);
-                    TextView opponentDistance = (TextView) findViewById(R.id.opponent_dis);
+                    TextView opponentName = (TextView) findViewById(R.id.user_name);
+                    TextView opponentWins = (TextView) findViewById(R.id.user_wins);
+                    TextView opponentDistance = (TextView) findViewById(R.id.user_dis);
 
                     opponentName.setText(mOpponent.name);
                     opponentWins.setText(String.valueOf(mOpponent.racesWon));
