@@ -24,7 +24,7 @@
         android:layout_height="393dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:background="#01002c" />
+        android:background="@drawable/main_header_second" />
 
     <ImageView
         android:id="@+id/opponent_profile"
