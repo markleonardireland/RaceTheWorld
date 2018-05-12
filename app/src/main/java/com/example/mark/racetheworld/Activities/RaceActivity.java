@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +18,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -38,20 +40,25 @@ public class RaceActivity extends AppCompatActivity implements GoogleApiClient.C
 
     protected static String TAG = "RunActivity";
 
-
-
-
     //Variables for controlling how fast the location update intervals are
     public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 5000;
     public static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS = UPDATE_INTERVAL_IN_MILLISECONDS / 2;
 
     protected String mOpponentUid;
 
-    //TextViews for showing location
-    protected TextView mLatitudeText;
-    protected TextView mLongitudeText;
-    protected TextView mDistanceText;
-    protected TextView mTimeText;
+    protected TextView mUserDistance;
+    protected TextView mUserTime;
+    protected TextView mUserPace;
+    protected TextView mUserPosition;
+    protected ImageView mUserImage;
+
+    protected TextView mOppDistance;
+    protected TextView mOppTime;
+    protected TextView mOppPace;
+    protected TextView mOppPosition;
+    protected ImageView mOppImage;
+
+    protected FirebaseDBHelper mHelper;
 
     User mOpponent;
 
@@ -77,6 +84,8 @@ public class RaceActivity extends AppCompatActivity implements GoogleApiClient.C
     //The time the run was started
     private long timeStart;
 
+    private long mTotalTime;
+
     //The tracked pace of the run
     private double trackedPace; //Distance / time
 
@@ -91,6 +100,7 @@ public class RaceActivity extends AppCompatActivity implements GoogleApiClient.C
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_race);
 
+        mHelper = new FirebaseDBHelper();
         mOpponentUid = getIntent().getStringExtra("oppuid");
         runDistance = 0;
         //Set the time the run was started
@@ -98,12 +108,17 @@ public class RaceActivity extends AppCompatActivity implements GoogleApiClient.C
         Log.e("Run Start time: ", Long.toString(timeStart));
 
         //Get the textview objects to enter run details.
-        mLatitudeText = (TextView) findViewById((R.id.latitude_text));
-        mLongitudeText = (TextView) findViewById((R.id.longtitude_text));
-        mDistanceText = (TextView) findViewById((R.id.distance_text));
-        mTimeText = (TextView) findViewById(R.id.time_text);
-        mOppTimeText = (TextView) findViewById(R.id.opp_time);
-        mOppDistanceText = (TextView) findViewById(R.id.opp_distance);
+        mUserDistance = (TextView) findViewById(R.id.user_distance);
+        mUserTime = (TextView) findViewById(R.id.user_time);
+        mUserPace = (TextView) findViewById(R.id.user_pace);
+        mUserPosition = (TextView) findViewById(R.id.user_position);
+        mUserImage = (ImageView) findViewById(R.id.user_pic);
+
+        mOppDistance = (TextView) findViewById(R.id.opp_user_distance);
+        mOppTime = (TextView) findViewById(R.id.opp_time);
+        mOppPace = (TextView) findViewById(R.id.opp_pace);
+        mOppPosition = (TextView) findViewById(R.id.opp_position);
+        mOppImage = (ImageView) findViewById(R.id.opp_pic);
 
 
         // Begin to monitor the opponents details
@@ -113,9 +128,7 @@ public class RaceActivity extends AppCompatActivity implements GoogleApiClient.C
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists())
                 {
-                    System.out.println(dataSnapshot.toString());
                     mOpponent = dataSnapshot.getValue(User.class);
-                    System.out.println(mOpponent.name);
                     updateOppUI();
                 }
             }
@@ -151,18 +164,40 @@ public class RaceActivity extends AppCompatActivity implements GoogleApiClient.C
     //When a location update occurs we need to update the textview (UI) fields with the information
     private void updateUserUI(){
         Log.e(TAG, "UpdateUI called");
-        mLatitudeText.setText(String.format("%s: %f", mLatitudeLabel,
-                mCurrentLocation.getLatitude()));
-        mLongitudeText.setText(String.format("%s: %f", mLongitudeLabel,
-                mCurrentLocation.getLongitude()));
-        mDistanceText.setText(String.format("%s: %4.2f", "Distance: ",
-                runDistance));
+        if (mUserImage.getDrawable() == null)
+        {
+             String url = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString();
+             mHelper.setImageFromUrl(mUserImage, url);
+        }
+        double distanceKm = runDistance / 1000;
+        mUserDistance.setText(String.format("%4.2f", distanceKm));
+        mUserTime.setText(String.format("%d", mTotalTime));
+        int pace = (int)(mTotalTime / distanceKm);
+        int paceMinutes = pace / 60;
+        int paceSeconds = pace % 60;
+        mUserPace.setText(String.format("%d:%d/%s", paceMinutes, paceSeconds, "km"));
     }
 
     private void updateOppUI(){
+        if (mOppImage.getDrawable() == null)
+        {
+            mHelper.setImageFromUrl(mOppImage, mOpponent.photoURL);
+        }
+
+
         Log.e("UpdateOppUI: ", "Currently updating UI for Opponent");
-        mOppTimeText.setText(String.valueOf(mOpponent.currentTime));
-        mOppDistanceText.setText(String.valueOf(mOpponent.currentDistance));
+        double distanceKm = mOpponent.currentDistance / 1000;
+
+        mOppTime.setText(String.valueOf(mOpponent.currentTime));
+        mOppDistance.setText(String.format("%4.2f", distanceKm));
+
+
+        int pace = (int)(mOpponent.currentTime / distanceKm);
+        int paceMinutes = pace / 60;
+        int paceSeconds = pace % 60;
+
+        mOppPace.setText(String.format("%d:%d/%s", paceMinutes, paceSeconds, "km"));
+
     }
 
     protected void onStart() {
@@ -260,18 +295,17 @@ public class RaceActivity extends AppCompatActivity implements GoogleApiClient.C
             Log.e(TAG, "Run Distance = " + runDistance);
 
             //Calculate the current pace which is equal to the distance over the time
-            long timeLapsedInSeconds = (System.currentTimeMillis() / 1000) - timeStart;
+            mTotalTime = (System.currentTimeMillis() / 1000) - timeStart;
 
             Log.e("Status: " , "Trying to update stats");
             FirebaseDBHelper dbHelper = new FirebaseDBHelper();
-            dbHelper.updateCurrentStats(runDistance, timeLapsedInSeconds);
+            dbHelper.updateCurrentStats(runDistance, mTotalTime);
 
         }
 
         mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
 
-        Toast.makeText(this, "Location changed",
-                Toast.LENGTH_SHORT).show();
+
         updateUserUI();
     }
 
@@ -305,8 +339,18 @@ public class RaceActivity extends AppCompatActivity implements GoogleApiClient.C
 //        finish();
     }
 
+    private void checkForWinner() {
+        //
+
+    }
+
     private void stopLocationUpdates(){
         LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+    }
+
+    private void updatePosition()
+    {
+        
     }
 
 }

@@ -27,7 +27,7 @@
         android:background="@drawable/main_header_second" />
 
     <ImageView
-        android:id="@+id/opponent_profile"
+        android:id="@+id/user_profile"
         android:layout_width="135dp"
         android:layout_height="131dp"
         android:layout_alignParentTop="true"
@@ -35,7 +35,7 @@
         android:layout_marginTop="81dp" />
 
     <TextView
-        android:id="@+id/opponent_name"
+        android:id="@+id/user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -45,11 +45,11 @@
         android:textSize="20sp" />
 
     <TextView
-        android:id="@+id/opponent_wins"
+        android:id="@+id/user_wins"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/opponent_dis"
+        android:layout_alignStart="@+id/user_dis"
         android:layout_marginBottom="252dp"
         android:textColor="@color/white"
         android:textSize="20sp" />
@@ -70,17 +70,17 @@
         android:id="@+id/wins_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/opponent_name"
-        android:layout_alignTop="@+id/opponent_wins"
+        android:layout_alignStart="@+id/user_name"
+        android:layout_alignTop="@+id/user_wins"
         android:text="Wins:"
         android:textColor="@color/white"
         android:textSize="20sp" />
 
     <TextView
-        android:id="@+id/opponent_dis"
+        android:id="@+id/user_dis"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/opponent_name"
+        android:layout_alignEnd="@+id/user_name"
         android:layout_alignTop="@+id/total_dis_text"
         android:textAllCaps="true"
         android:textColor="@color/white"
