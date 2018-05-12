@@ -3,6 +3,7 @@ package com.example.mark.racetheworld.Activities;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -34,6 +35,11 @@ public class PreChallengeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pre_challenge);
         mOppEmail = getIntent().getStringExtra("email");
         mHelper = new FirebaseDBHelper();
+
+
+
+
+
 
         Log.e("PreChallengeActivity: ", "Opponents Email is : " + mOppEmail);
 
@@ -111,5 +117,11 @@ public class PreChallengeActivity extends AppCompatActivity {
         startActivity(intent);
         mUserQuery.removeEventListener(mEventListener);
         finish();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }

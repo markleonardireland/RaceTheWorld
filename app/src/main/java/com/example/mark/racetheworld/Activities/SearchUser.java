@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,6 +42,11 @@ public class SearchUser extends AppCompatActivity {
 
         mUserDatabase = FirebaseDatabase.getInstance().getReference("Users");
 
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(myToolbar);
+        getSupportActionBar().setTitle("Search Users");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         mSearchField = (EditText) findViewById(R.id.search_field);
         mSearchBtn = (Button) findViewById(R.id.search_btn);
@@ -161,5 +167,10 @@ public class SearchUser extends AppCompatActivity {
             races_won.setText(String.valueOf(mRacesWon));
 
         }
+    }
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }
