@@ -133,6 +133,8 @@ public class PreChallengeActivity extends AppCompatActivity {
         Log.e("onUserReady", "Starting another race activity");
         Intent intent = new Intent(PreChallengeActivity.this, RaceActivity.class);
         intent.putExtra("oppuid", mOpponentUid);
+        intent.putExtra("targetDistance", Double.parseDouble(mChallengeDistanceInput.getText().toString()));
+
         startActivity(intent);
         mUserQuery.removeEventListener(mEventListener);
         finish();

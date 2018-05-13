@@ -117,7 +117,9 @@ public class FirebaseDBHelper {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String issuedByUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                Challenge newChallenge = new Challenge(oEmail, d);
+                String userEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+                String currentName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+                Challenge newChallenge = new Challenge(oEmail, d, currentName, issuedByUid, userEmail);
                 databaseReference.child("Challenges").child(issuedByUid).setValue(newChallenge);
             }
 

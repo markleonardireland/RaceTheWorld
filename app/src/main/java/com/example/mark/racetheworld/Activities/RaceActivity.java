@@ -72,6 +72,7 @@ public class RaceActivity extends AppCompatActivity implements GoogleApiClient.C
     protected TextView mOppTimeText;
     protected Boolean mRequestingLocationUpdates;
 
+
     //Strings
     protected String mLastUpdateTime;
 
@@ -103,9 +104,10 @@ public class RaceActivity extends AppCompatActivity implements GoogleApiClient.C
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_race);
 
-        mTargetDistance = 5.00;
+
         mHelper = new FirebaseDBHelper();
         mOpponentUid = getIntent().getStringExtra("oppuid");
+        getIntent().getDoubleExtra("targetDistance", mTargetDistance);
         runDistance = 0;
         //Set the time the run was started
         timeStart = System.currentTimeMillis()/1000;

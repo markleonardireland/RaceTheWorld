@@ -11,10 +11,10 @@
             android:id="@+id/nav_challenge"
             android:icon="@drawable/ic_directions_run_black_24dp"
             android:title="Challenge" />
-        <!--<item-->
-            <!--android:id="@+id/nav_my_challenges"-->
-            <!--android:icon="@drawable/ic_directions_run_black_24dp"-->
-            <!--android:title="My Challenges" />-->
+        <item
+            android:id="@+id/nav_my_challenges"
+            android:icon="@drawable/ic_directions_run_black_24dp"
+            android:title="My Challenges" />
         <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/ic_logout_black_24dp"

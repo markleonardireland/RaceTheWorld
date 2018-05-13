@@ -40,7 +40,7 @@ public class MyChallengesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_challenges);
 
-        mUserDatabase = FirebaseDatabase.getInstance().getReference().child("User");
+        mUserDatabase = FirebaseDatabase.getInstance().getReference().child("Challenges");
 
         mResultList = findViewById(R.id.challenge_list);
         mResultList.setHasFixedSize(true);
@@ -52,30 +52,31 @@ public class MyChallengesActivity extends AppCompatActivity {
     private void firebaseUserSearch(String searchText) {
 
         Log.e("seaarching for ", searchText);
+        String userEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         Toast.makeText(MyChallengesActivity.this, "Started Search", Toast.LENGTH_LONG).show();
 
-        Query firebaseSearchQuery = mUserDatabase.orderByChild("name").startAt(searchText).endAt(searchText + "\uf8ff");
+        Query firebaseSearchQuery = mUserDatabase.orderByChild("issuedToEmail").startAt(userEmail).endAt(userEmail + "\uf8ff");;
 
-        FirebaseRecyclerOptions<User> options =
-                new FirebaseRecyclerOptions.Builder<User>()
-                        .setQuery(firebaseSearchQuery, User.class)
+        FirebaseRecyclerOptions<Challenge> options =
+                new FirebaseRecyclerOptions.Builder<Challenge>()
+                        .setQuery(firebaseSearchQuery, Challenge.class)
                         .build();
 
-        mAdapter = new FirebaseRecyclerAdapter<User, MyChallengesActivity.UsersViewHolder>(options)
+        mAdapter = new FirebaseRecyclerAdapter<Challenge, MyChallengesActivity.ChallengeViewHolder>(options)
         {
             @Override
-            public MyChallengesActivity.UsersViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+            public MyChallengesActivity.ChallengeViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
             {
                 Log.e("onCreateViewHolder: ", "Creating View Holder");
                 View view = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.list_layout, parent, false);
+                        .inflate(R.layout.challenge_list_layout, parent, false);
 
-                return new MyChallengesActivity.UsersViewHolder(view);
+                return new MyChallengesActivity.ChallengeViewHolder(view);
             }
             @Override
-            protected void onBindViewHolder(MyChallengesActivity.UsersViewHolder viewHolder, int position, User model) {
-                Log.e("onBindViewHolder", model.name);
-                viewHolder.setDetails(getApplicationContext(), model.name, model.racesWon, model.email, model.photoURL);
+            protected void onBindViewHolder(MyChallengesActivity.ChallengeViewHolder viewHolder, int position, Challenge model) {
+                Log.e("onBindViewHolder", String.valueOf(model.distance));
+                viewHolder.setDetails(getApplicationContext(), model.issuedByName, model.distance, model.issuedByUid);
             }
         };
 
@@ -99,50 +100,44 @@ public class MyChallengesActivity extends AppCompatActivity {
     }
     // View Holder Class
 
-    public static class UsersViewHolder extends RecyclerView.ViewHolder {
+    public static class ChallengeViewHolder extends RecyclerView.ViewHolder {
 
         View mView;
-        String mEmail;
+        double mDistance;
         String mName;
-        long mRacesWon;
+        String mUid;
 
-        public UsersViewHolder(View itemView) {
+        public ChallengeViewHolder(View itemView) {
             super(itemView);
 
             mView = itemView;
-
-            Button btn = mView.findViewById(R.id.challenge_button);
-            btn.setOnClickListener(new View.OnClickListener() {
+            Button acceptButton = (Button) mView.findViewById(R.id.accept_button);
+            acceptButton.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view) {
-
-                    Log.e("Button status: ", mEmail);
-                    // Send to the preActivity with the email
-                    Intent intent = new Intent(mView.getContext(), PreChallengeActivity.class);
-                    intent.putExtra("email", mEmail);
+                public void onClick(View v) {
+                    Intent intent = new Intent(mView.getContext(), RaceActivity.class);
+                    intent.putExtra("oppuid", mUid);
+                    intent.putExtra("targetDistance", mDistance);
+                    FirebaseDBHelper helper = new FirebaseDBHelper();
+                    helper.setReadyState(FirebaseAuth.getInstance().getCurrentUser().getUid());
                     mView.getContext().startActivity(intent);
-                    Activity act = (Activity) mView.getContext();
-
-
 
                 }
             });
         }
 
-        public void setDetails(Context ctx, String userName, long racesWon, String email, String photoURL){
-            TextView user_name = (TextView) mView.findViewById(R.id.name_text);
-            TextView races_won = (TextView) mView.findViewById(R.id.races_won);
-            ImageView user_pic = (ImageView) mView.findViewById(R.id.profile_image);
+        public void setDetails(Context ctx, String name, double distance, String uid){
+            TextView challengerName = (TextView) mView.findViewById(R.id.challenge_name);
+            TextView challengeDistance = (TextView) mView.findViewById(R.id.challenge_distance);
 
+            mDistance = distance;
+            mName = name;
+            mUid = uid;
 
-            mEmail = email;
-            mRacesWon = racesWon;
-            mName = userName;
-
-            user_name.setText(mName);
-            races_won.setText(String.valueOf(mRacesWon));
+            challengerName.setText(name);
+            challengeDistance.setText(String.format("%4.2f km", distance));
             FirebaseDBHelper helper = new FirebaseDBHelper();
-            helper.setImageFromUrl(user_pic, photoURL.toString());
+
 
 
         }
