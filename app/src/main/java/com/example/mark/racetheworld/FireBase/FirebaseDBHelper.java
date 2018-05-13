@@ -38,7 +38,7 @@ public class FirebaseDBHelper {
         ValueEventListener eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(!dataSnapshot.exists()) {
+                if(dataSnapshot.exists()) {
                     //create new user
 
 
