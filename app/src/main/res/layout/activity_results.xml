@@ -2,8 +2,59 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/winner_image"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/main_header_second"
     tools:context=".Activities.ResultsActivity">
 
+    <ImageView
+        android:id="@+id/winner_image"
+        android:layout_width="167dp"
+        android:layout_height="164dp"
+        app:srcCompat="@drawable/mockprofile"
+        tools:layout_editor_absoluteX="109dp"
+        tools:layout_editor_absoluteY="120dp" />
+
+    <TextView
+        android:id="@+id/thewinneris"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="The Winner Is:"
+        android:textColor="@color/white"
+        android:textSize="26sp"
+        tools:layout_editor_absoluteX="110dp"
+        tools:layout_editor_absoluteY="55dp" />
+
+    <TextView
+        android:id="@+id/winner_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="winner_name"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        tools:layout_editor_absoluteX="132dp"
+        tools:layout_editor_absoluteY="331dp" />
+
+    <TextView
+        android:id="@+id/winner_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="winning time"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        tools:layout_editor_absoluteX="135dp"
+        tools:layout_editor_absoluteY="455dp" />
+
+    <TextView
+        android:id="@+id/timetaken"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Time taken:"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        tools:layout_editor_absoluteX="146dp"
+        tools:layout_editor_absoluteY="420dp" />
+
 </android.support.constraint.ConstraintLayout>
+
