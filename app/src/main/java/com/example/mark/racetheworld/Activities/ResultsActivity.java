@@ -3,7 +3,12 @@ package com.example.mark.racetheworld.Activities;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.example.mark.racetheworld.FireBase.FirebaseDBHelper;
 import com.example.mark.racetheworld.FireBase.User;
 import com.example.mark.racetheworld.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,14 +25,28 @@ public class ResultsActivity extends AppCompatActivity {
     protected User mOpponent;
     protected double mRunDistance;
     protected ChildEventListener mEventListener;
+    protected FirebaseDBHelper mHelper;
     protected DatabaseReference mReference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
+
+        Button finishButton = findViewById(R.id.finish_button);
+        finishButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mReference.removeEventListener(mEventListener);
+                finish();
+            }
+        });
+
+        mHelper = new FirebaseDBHelper();
         mOpponentUid = getIntent().getStringExtra("OppUid");
         mRunDistance = getIntent().getDoubleExtra("userDistance", 0.00);
         checkForWinner();
+
+
     }
 
     private void checkForWinner(){
@@ -84,8 +103,22 @@ public class ResultsActivity extends AppCompatActivity {
         if (mCurrentUser.currentDistance >= mOpponent.currentDistance){
             winner = mCurrentUser;
         }
+        else
+        {
+            winner = mOpponent;
+        }
         FirebaseDatabase.getInstance().getReference().child("Users").child(mOpponentUid).child("racesWon").setValue(mOpponent.racesWon + 1);
 
+        TextView winnerName = (TextView) findViewById(R.id.winner_name);
+        TextView winnerTime = (TextView) findViewById(R.id.winner_time);
+        ImageView winnerImage = (ImageView) findViewById(R.id.winner_pic);
+
+        winnerName.setText(winner.name);
+        int timeMinutes = (int)winner.currentTime / 60;
+        int timeSeconds = (int)winner.currentTime % 60;
+        winnerTime.setText(String.format("%d:%d", timeMinutes, timeSeconds));
+
+        mHelper.setImageFromUrl(winnerImage, winner.photoURL);
 
     }
 }

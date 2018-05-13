@@ -45,6 +45,9 @@ public class RaceActivity extends AppCompatActivity implements GoogleApiClient.C
     public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 5000;
     public static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS = UPDATE_INTERVAL_IN_MILLISECONDS / 2;
 
+    protected DatabaseReference mReference;
+    protected ValueEventListener mEventListener;
+
     protected double mTargetDistance;
     protected String mOpponentUid;
 
@@ -140,8 +143,8 @@ public class RaceActivity extends AppCompatActivity implements GoogleApiClient.C
 
 
         // Begin to monitor the opponents details
-        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("Users").child(mOpponentUid);
-        userRef.addValueEventListener(new ValueEventListener() {
+        mReference = FirebaseDatabase.getInstance().getReference().child("Users").child(mOpponentUid);
+        mEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists())
@@ -160,8 +163,9 @@ public class RaceActivity extends AppCompatActivity implements GoogleApiClient.C
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
+        };
 
+        mReference.addValueEventListener(mEventListener);
 
         //true to automatically start recording data, false to wait for a callback (button press for example)
         mRequestingLocationUpdates = true;
@@ -194,7 +198,11 @@ public class RaceActivity extends AppCompatActivity implements GoogleApiClient.C
         }
         double distanceKm = runDistance / 1000;
         mUserDistance.setText(String.format("%4.2f", distanceKm));
-        mUserTime.setText(String.format("%d", mTotalTime));
+
+        int timeMinutes = (int)mTotalTime / 60;
+        int timeSeconds = (int)mTotalTime % 60;
+        mUserTime.setText(String.format("%d:%d", timeMinutes, timeSeconds));
+
         int pace = (int)(mTotalTime / distanceKm);
         int paceMinutes = pace / 60;
         int paceSeconds = pace % 60;
@@ -213,6 +221,9 @@ public class RaceActivity extends AppCompatActivity implements GoogleApiClient.C
         Log.e("UpdateOppUI: ", "Currently updating UI for Opponent");
         double distanceKm = mOpponent.currentDistance / 1000;
 
+        int timeMinutes = (int)mOpponent.currentTime / 60;
+        int timeSeconds = (int)mOpponent.currentTime % 60;
+        mUserTime.setText(String.format("%d:%d", timeMinutes, timeSeconds));
         mOppTime.setText(String.valueOf(mOpponent.currentTime));
         mOppDistance.setText(String.format("%4.2f", distanceKm));
 
@@ -233,7 +244,9 @@ public class RaceActivity extends AppCompatActivity implements GoogleApiClient.C
 
     protected void onStop() {
         mGoogleApiClient.disconnect();
+        mReference.removeEventListener(mEventListener);
         super.onStop();
+
     }
 
     @Override
@@ -416,4 +429,5 @@ public class RaceActivity extends AppCompatActivity implements GoogleApiClient.C
             finishRace();
         }
     }
+
 }
