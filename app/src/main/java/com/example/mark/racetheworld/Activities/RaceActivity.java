@@ -223,8 +223,8 @@ public class RaceActivity extends AppCompatActivity implements GoogleApiClient.C
 
         int timeMinutes = (int)mOpponent.currentTime / 60;
         int timeSeconds = (int)mOpponent.currentTime % 60;
-        mUserTime.setText(String.format("%d:%d", timeMinutes, timeSeconds));
-        mOppTime.setText(String.valueOf(mOpponent.currentTime));
+        mOppTime.setText(String.format("%d:%d", timeMinutes, timeSeconds));
+        
         mOppDistance.setText(String.format("%4.2f", distanceKm));
 
 
