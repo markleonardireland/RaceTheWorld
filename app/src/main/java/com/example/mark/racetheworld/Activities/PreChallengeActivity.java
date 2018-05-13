@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,6 +31,11 @@ public class PreChallengeActivity extends AppCompatActivity {
     protected ChildEventListener mEventListener;
     protected Query mUserQuery;
 
+    // UI elements
+    protected TextView mWaitingPrompt;
+    protected TextView mChallengeDistanceInput;
+    protected Button mChallengeButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,9 +43,20 @@ public class PreChallengeActivity extends AppCompatActivity {
         mOppEmail = getIntent().getStringExtra("email");
         mHelper = new FirebaseDBHelper();
 
+        mChallengeDistanceInput = (TextView) findViewById(R.id.distance_edit);
 
+        mWaitingPrompt = (TextView) findViewById(R.id.waiting_text);
+        mWaitingPrompt.setVisibility(View.INVISIBLE);
 
+        mChallengeButton = (Button) findViewById(R.id.challenge_button);
+        mChallengeButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Code here executes on main thread after user presses button
+                initiateChallenge();
+            }
+        });
 
+        mChallengeButton.setEnabled(false);
 
 
         Log.e("PreChallengeActivity: ", "Opponents Email is : " + mOppEmail);
@@ -75,6 +93,7 @@ public class PreChallengeActivity extends AppCompatActivity {
                     opponentWins.setText(String.valueOf(mOpponent.racesWon));
                     opponentDistance.setText(String.valueOf(mOpponent.totalDistance));
 
+                    mChallengeButton.setEnabled(true);
 
                     // Now that we have the information begin to check if the other use r is ready
                     if (mOpponent.ready == true) {
@@ -123,5 +142,13 @@ public class PreChallengeActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    private void initiateChallenge() {
+        double challengeDistance = Double.parseDouble(mChallengeDistanceInput.getText().toString());
+        Log.e("Challenge Distance: ", String.valueOf(challengeDistance));
+
+        // Create the challenge in the FB databse
+        mHelper.createNewChallenge(mOpponent.email, challengeDistance);
     }
 }

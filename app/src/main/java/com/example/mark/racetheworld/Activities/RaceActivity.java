@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,7 +45,10 @@ public class RaceActivity extends AppCompatActivity implements GoogleApiClient.C
     public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 5000;
     public static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS = UPDATE_INTERVAL_IN_MILLISECONDS / 2;
 
+    protected double mTargetDistance;
     protected String mOpponentUid;
+
+    protected Button mStopButton;
 
     protected TextView mUserDistance;
     protected TextView mUserTime;
@@ -58,6 +62,7 @@ public class RaceActivity extends AppCompatActivity implements GoogleApiClient.C
     protected TextView mOppPosition;
     protected ImageView mOppImage;
 
+
     protected FirebaseDBHelper mHelper;
 
     User mOpponent;
@@ -68,8 +73,6 @@ public class RaceActivity extends AppCompatActivity implements GoogleApiClient.C
     protected Boolean mRequestingLocationUpdates;
 
     //Strings
-    protected String mLatitudeLabel = "Latitude: ";
-    protected String mLongitudeLabel = "Longtitude";
     protected String mLastUpdateTime;
 
     //Location variables
@@ -100,6 +103,7 @@ public class RaceActivity extends AppCompatActivity implements GoogleApiClient.C
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_race);
 
+        mTargetDistance = 5.00;
         mHelper = new FirebaseDBHelper();
         mOpponentUid = getIntent().getStringExtra("oppuid");
         runDistance = 0;
@@ -119,6 +123,14 @@ public class RaceActivity extends AppCompatActivity implements GoogleApiClient.C
         mOppPace = (TextView) findViewById(R.id.opp_pace);
         mOppPosition = (TextView) findViewById(R.id.opp_position);
         mOppImage = (ImageView) findViewById(R.id.opp_pic);
+
+        mStopButton = (Button) findViewById(R.id.stop_button);
+        mStopButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Code here executes on main thread after user presses button
+                finishRace();
+            }
+        });
 
 
         // Begin to monitor the opponents details
@@ -176,6 +188,8 @@ public class RaceActivity extends AppCompatActivity implements GoogleApiClient.C
         int paceMinutes = pace / 60;
         int paceSeconds = pace % 60;
         mUserPace.setText(String.format("%d:%d/%s", paceMinutes, paceSeconds, "km"));
+
+        updatePosition();
     }
 
     private void updateOppUI(){
@@ -198,6 +212,7 @@ public class RaceActivity extends AppCompatActivity implements GoogleApiClient.C
 
         mOppPace.setText(String.format("%d:%d/%s", paceMinutes, paceSeconds, "km"));
 
+        updatePosition();
     }
 
     protected void onStart() {
@@ -350,7 +365,30 @@ public class RaceActivity extends AppCompatActivity implements GoogleApiClient.C
 
     private void updatePosition()
     {
-        
+        if (mOpponent.currentDistance >= runDistance)
+        {
+            mOppPosition.setText("1st");
+            mUserPosition.setText("2nd");
+        }
+        else{
+            mOppPosition.setText("2nd");
+            mUserPosition.setText("1st");
+        }
     }
 
+
+    private void finishRace() {
+        // Start the new Intent
+        Intent intent = new Intent(RaceActivity.this, ResultsActivity.class);
+        intent.putExtra("OppUid", mOpponentUid);
+        startActivity(intent);
+    }
+
+    private void checkForFinish()
+    {
+        if (runDistance >= mTargetDistance)
+        {
+            finishRace();
+        }
+    }
 }

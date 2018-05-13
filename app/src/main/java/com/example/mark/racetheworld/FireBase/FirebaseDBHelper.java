@@ -12,6 +12,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.InputStream;
@@ -105,5 +106,31 @@ public class FirebaseDBHelper {
         protected void onPostExecute(Bitmap result) {
             bmImage.setImageBitmap(result);
         }
+    }
+
+    public void createNewChallenge(String oppEmail, double distance){
+        // First find the last ID that was created,
+        final String oEmail = oppEmail;
+        final double d = distance;
+        Query query = databaseReference.child("Challenges");
+        ValueEventListener eventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String newChallengeId = String.valueOf(dataSnapshot.getChildrenCount());
+                String issuedByEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+                String issuedByUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                Challenge newChallenge = new Challenge(issuedByEmail, oEmail, d, issuedByUid);
+                databaseReference.child("Challenges").child(newChallengeId).setValue(newChallenge);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+
+        query.addListenerForSingleValueEvent(eventListener);
+
+
     }
 }

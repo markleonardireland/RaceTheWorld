@@ -25,8 +25,10 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activities.SearchUser"
-            android:windowSoftInputMode="adjustPan"></activity>
-        <activity android:name=".Activities.PreChallengeActivity"></activity>
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".Activities.PreChallengeActivity" />
+        <activity android:name=".Activities.ResultsActivity" />
+        <activity android:name=".Activities.MyChallengesActivity"></activity>
     </application>
 
 </manifest>
