@@ -10,10 +10,8 @@ public class Challenge {
 
     }
 
-    public Challenge(String issuedByEmail, String issuedToEmail, double distance, String issuedByUid){
-        this.issuedByEmail = issuedByEmail;
+    public Challenge(String issuedToEmail, double distance){
         this.issuedToEmail = issuedToEmail;
         this.distance = distance;
-        this.issuedByUid = issuedByUid;
     }
 }

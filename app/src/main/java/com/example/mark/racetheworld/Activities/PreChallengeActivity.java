@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.mark.racetheworld.FireBase.FirebaseDBHelper;
 import com.example.mark.racetheworld.FireBase.User;
@@ -65,7 +66,6 @@ public class PreChallengeActivity extends AppCompatActivity {
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("Users");
         mUserQuery = userRef.orderByChild("email").equalTo(mOppEmail);
 
-        mHelper.setReadyState(FirebaseAuth.getInstance().getCurrentUser().getUid());
         mEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
@@ -145,10 +145,25 @@ public class PreChallengeActivity extends AppCompatActivity {
     }
 
     private void initiateChallenge() {
-        double challengeDistance = Double.parseDouble(mChallengeDistanceInput.getText().toString());
-        Log.e("Challenge Distance: ", String.valueOf(challengeDistance));
+        String challengeInput = mChallengeDistanceInput.getText().toString();
+        if (challengeInput.isEmpty())
+        {
+            Toast.makeText(PreChallengeActivity.this, "You must enter a valid distance.", Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            double challengeDistance = Double.parseDouble(mChallengeDistanceInput.getText().toString());
+            Log.e("Challenge Distance: ", String.valueOf(challengeDistance));
 
-        // Create the challenge in the FB databse
-        mHelper.createNewChallenge(mOpponent.email, challengeDistance);
+            // Create the challenge in the FB databse
+            mHelper.createNewChallenge(mOpponent.email, challengeDistance);
+
+            mChallengeDistanceInput.setVisibility(View.INVISIBLE);
+            mChallengeButton.setVisibility(View.INVISIBLE);
+            mWaitingPrompt.setVisibility(View.VISIBLE);
+
+            mHelper.setReadyState(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        }
+
     }
 }

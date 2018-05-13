@@ -116,11 +116,9 @@ public class FirebaseDBHelper {
         ValueEventListener eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String newChallengeId = String.valueOf(dataSnapshot.getChildrenCount());
-                String issuedByEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
                 String issuedByUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                Challenge newChallenge = new Challenge(issuedByEmail, oEmail, d, issuedByUid);
-                databaseReference.child("Challenges").child(newChallengeId).setValue(newChallenge);
+                Challenge newChallenge = new Challenge(oEmail, d);
+                databaseReference.child("Challenges").child(issuedByUid).setValue(newChallenge);
             }
 
             @Override

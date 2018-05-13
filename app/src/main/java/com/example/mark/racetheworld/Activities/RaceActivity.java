@@ -128,6 +128,9 @@ public class RaceActivity extends AppCompatActivity implements GoogleApiClient.C
         mStopButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Code here executes on main thread after user presses button
+
+                // We treat pressing this button as a forfeit
+                mHelper.updateCurrentStats(0, 0);
                 finishRace();
             }
         });
@@ -379,6 +382,7 @@ public class RaceActivity extends AppCompatActivity implements GoogleApiClient.C
 
     private void finishRace() {
         // Start the new Intent
+        mHelper.resetReadyState(FirebaseAuth.getInstance().getCurrentUser().getUid());
         Intent intent = new Intent(RaceActivity.this, ResultsActivity.class);
         intent.putExtra("OppUid", mOpponentUid);
         startActivity(intent);
