@@ -149,7 +149,7 @@ public class RaceActivity extends AppCompatActivity implements GoogleApiClient.C
                     mOpponent = dataSnapshot.getValue(User.class);
                     updateOppUI();
 
-                    if (mOpponent.currentDistance / 1000 >= mTargetDistance)
+                    if ((mOpponent.currentDistance / 1000 >= mTargetDistance) || mOpponent.ready == false)
                     {
                         finishRace();
                     }
@@ -403,6 +403,7 @@ public class RaceActivity extends AppCompatActivity implements GoogleApiClient.C
         Intent intent = new Intent(RaceActivity.this, ResultsActivity.class);
         intent.putExtra("OppUid", mOpponentUid);
         startActivity(intent);
+        finish();
     }
 
     private void checkForFinish()
