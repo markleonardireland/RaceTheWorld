@@ -18,24 +18,29 @@ public class ResultsActivity extends AppCompatActivity {
     protected String mOpponentUid;
     protected User mCurrentUser;
     protected User mOpponent;
+    protected double mRunDistance;
+    protected ChildEventListener mEventListener;
+    protected DatabaseReference mReference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
         mOpponentUid = getIntent().getStringExtra("OppUid");
+        mRunDistance = getIntent().getDoubleExtra("userDistance", 0.00);
         checkForWinner();
     }
 
     private void checkForWinner(){
         // Get both current user and opponent user info from teh database and then check
         // who won
-        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("Users");
-        ChildEventListener eventListener = new ChildEventListener() {
+        mReference = FirebaseDatabase.getInstance().getReference().child("Users");
+        mEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Log.e("Child Added", dataSnapshot.toString());
                 if (dataSnapshot.getKey().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
                     mCurrentUser = dataSnapshot.getValue(User.class);
+                    mReference.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("totalDistance").setValue(mCurrentUser.totalDistance + mRunDistance);
                 }
 
                 if (dataSnapshot.getKey().equals(mOpponentUid)){
@@ -67,19 +72,17 @@ public class ResultsActivity extends AppCompatActivity {
 
             }
         };
-        userRef.addChildEventListener(eventListener);
+        mReference.addChildEventListener(mEventListener);
     }
 
     private void displayWinner(){
         System.out.println("Displaying Winner");
+        mReference.removeEventListener(mEventListener);
         // Incrememnt the winners score
         User winner;
 
         if (mCurrentUser.currentDistance >= mOpponent.currentDistance){
             winner = mCurrentUser;
-        }
-        else{
-            winner = mOpponent;
         }
         FirebaseDatabase.getInstance().getReference().child("Users").child(mOpponentUid).child("racesWon").setValue(mOpponent.racesWon + 1);
 

@@ -400,8 +400,11 @@ public class RaceActivity extends AppCompatActivity implements GoogleApiClient.C
     private void finishRace() {
         // Start the new Intent
         mHelper.resetReadyState(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
         Intent intent = new Intent(RaceActivity.this, ResultsActivity.class);
         intent.putExtra("OppUid", mOpponentUid);
+        intent.putExtra("userDistance", runDistance);
+
         startActivity(intent);
         finish();
     }
