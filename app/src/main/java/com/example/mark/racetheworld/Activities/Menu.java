@@ -71,7 +71,7 @@ public class Menu extends AppCompatActivity implements NavigationView.OnNavigati
         mAuth = FirebaseAuth.getInstance();
         FirebaseDBHelper helper = new FirebaseDBHelper();
         helper.createUserIfNotExists(mAuth.getCurrentUser().getUid());
-        helper.resetReadyState(mAuth.getCurrentUser().getUid());
+        //helper.resetReadyState(mAuth.getCurrentUser().getUid());
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -101,8 +101,6 @@ public class Menu extends AppCompatActivity implements NavigationView.OnNavigati
                     mHelper.setImageFromUrl(image, currUser.photoURL);
                     name.setText(currUser.name);
                     email.setText(currUser.email);
-
-
                 }
             }
 

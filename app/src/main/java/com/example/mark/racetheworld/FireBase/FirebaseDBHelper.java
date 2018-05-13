@@ -38,7 +38,7 @@ public class FirebaseDBHelper {
         ValueEventListener eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()) {
+                if(!dataSnapshot.exists()) {
                     //create new user
 
 
@@ -52,6 +52,10 @@ public class FirebaseDBHelper {
 
                     // Get the reference for users
                     databaseReference.child("Users").child(uid).setValue(newUser);
+                }
+                else
+                {
+                    dataSnapshot.child("ready").getRef().setValue(false);
                 }
             }
 
