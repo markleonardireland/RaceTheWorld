@@ -107,7 +107,8 @@ public class RaceActivity extends AppCompatActivity implements GoogleApiClient.C
 
         mHelper = new FirebaseDBHelper();
         mOpponentUid = getIntent().getStringExtra("oppuid");
-        getIntent().getDoubleExtra("targetDistance", mTargetDistance);
+        mTargetDistance = getIntent().getDoubleExtra("targetDistance", 0.00);
+        System.out.println("Target Distance" + String.valueOf(mTargetDistance));
         runDistance = 0;
         //Set the time the run was started
         timeStart = System.currentTimeMillis()/1000;
