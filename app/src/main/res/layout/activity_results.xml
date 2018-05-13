@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/winner_image"
@@ -12,6 +12,9 @@
         android:id="@+id/winner_image"
         android:layout_width="167dp"
         android:layout_height="164dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="103dp"
         app:srcCompat="@drawable/mockprofile"
         tools:layout_editor_absoluteX="109dp"
         tools:layout_editor_absoluteY="120dp" />
@@ -20,6 +23,9 @@
         android:id="@+id/thewinneris"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
         android:text="The Winner Is:"
         android:textColor="@color/white"
         android:textSize="26sp"
@@ -30,6 +36,9 @@
         android:id="@+id/winner_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="228dp"
         android:text="winner_name"
         android:textColor="@color/white"
         android:textSize="20sp"
@@ -40,6 +49,9 @@
         android:id="@+id/winner_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="95dp"
         android:text="winning time"
         android:textColor="@color/white"
         android:textSize="20sp"
@@ -50,11 +62,14 @@
         android:id="@+id/timetaken"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="147dp"
         android:text="Time taken:"
         android:textColor="@color/white"
         android:textSize="18sp"
         tools:layout_editor_absoluteX="146dp"
         tools:layout_editor_absoluteY="420dp" />
 
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>
 
