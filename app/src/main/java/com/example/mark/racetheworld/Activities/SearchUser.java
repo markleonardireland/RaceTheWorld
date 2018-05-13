@@ -14,9 +14,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.mark.racetheworld.FireBase.FirebaseDBHelper;
 import com.example.mark.racetheworld.FireBase.User;
 import com.example.mark.racetheworld.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -32,7 +34,7 @@ public class SearchUser extends AppCompatActivity {
 
     private RecyclerView mResultList;
     private FirebaseRecyclerAdapter mAdapter;
-
+    private FirebaseDBHelper mHelper;
     private DatabaseReference mUserDatabase;
 
     @Override
@@ -47,6 +49,7 @@ public class SearchUser extends AppCompatActivity {
         getSupportActionBar().setTitle("Search Users");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        mHelper = new FirebaseDBHelper();
 
         mSearchField = (EditText) findViewById(R.id.search_field);
         mSearchBtn = (Button) findViewById(R.id.search_btn);
@@ -111,7 +114,7 @@ public class SearchUser extends AppCompatActivity {
             @Override
             protected void onBindViewHolder(UsersViewHolder viewHolder, int position, User model) {
                 Log.e("onBindViewHolder", model.name);
-                viewHolder.setDetails(getApplicationContext(), model.name, model.racesWon, model.email);
+                viewHolder.setDetails(getApplicationContext(), model.name, model.racesWon, model.email, model.photoURL);
             }
         };
 
@@ -154,9 +157,10 @@ public class SearchUser extends AppCompatActivity {
             });
         }
 
-        public void setDetails(Context ctx, String userName, long racesWon, String email){
+        public void setDetails(Context ctx, String userName, long racesWon, String email, String photoURL){
             TextView user_name = (TextView) mView.findViewById(R.id.name_text);
             TextView races_won = (TextView) mView.findViewById(R.id.races_won);
+            ImageView user_pic = (ImageView) mView.findViewById(R.id.profile_image);
 
 
             mEmail = email;
@@ -165,6 +169,9 @@ public class SearchUser extends AppCompatActivity {
 
             user_name.setText(mName);
             races_won.setText(String.valueOf(mRacesWon));
+            FirebaseDBHelper helper = new FirebaseDBHelper();
+            helper.setImageFromUrl(user_pic, photoURL.toString());
+
 
         }
     }
