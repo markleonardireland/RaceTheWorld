@@ -147,6 +147,11 @@ public class RaceActivity extends AppCompatActivity implements GoogleApiClient.C
                 {
                     mOpponent = dataSnapshot.getValue(User.class);
                     updateOppUI();
+
+                    if (mOpponent.currentDistance / 1000 >= mTargetDistance)
+                    {
+                        finishRace();
+                    }
                 }
             }
 
@@ -320,6 +325,11 @@ public class RaceActivity extends AppCompatActivity implements GoogleApiClient.C
             Log.e("Status: " , "Trying to update stats");
             FirebaseDBHelper dbHelper = new FirebaseDBHelper();
             dbHelper.updateCurrentStats(runDistance, mTotalTime);
+
+            if (runDistance / 1000 >= mTargetDistance)
+            {
+                finishRace();
+            }
 
         }
 
