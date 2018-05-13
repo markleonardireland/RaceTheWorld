@@ -381,15 +381,19 @@ public class RaceActivity extends AppCompatActivity implements GoogleApiClient.C
 
     private void updatePosition()
     {
-        if (mOpponent.currentDistance >= runDistance)
+        if (mOpponent != null)
         {
-            mOppPosition.setText("1st");
-            mUserPosition.setText("2nd");
+            if (mOpponent.currentDistance >= runDistance)
+            {
+                mOppPosition.setText("1st");
+                mUserPosition.setText("2nd");
+            }
+            else{
+                mOppPosition.setText("2nd");
+                mUserPosition.setText("1st");
+            }
         }
-        else{
-            mOppPosition.setText("2nd");
-            mUserPosition.setText("1st");
-        }
+
     }
 
 
