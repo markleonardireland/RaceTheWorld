@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -138,9 +139,9 @@ public class Menu extends AppCompatActivity implements NavigationView.OnNavigati
                  Intent intent = new Intent(Menu.this, SearchUser.class);
                  startActivity(intent);
                 break;
-            case R.id.nav_race:
-                Intent intent2 = new Intent(Menu.this, RaceActivity.class);
-                startActivity(intent2);
+            case R.id.nav_my_challenges:
+                Intent intent3 = new Intent(Menu.this, MyChallengesActivity.class);
+                startActivity(intent3);
                 break;
             case R.id.nav_logout:
                 mAuth = FirebaseAuth.getInstance();
@@ -155,6 +156,8 @@ public class Menu extends AppCompatActivity implements NavigationView.OnNavigati
                             }
                         });
         }
+
+        drawer.closeDrawer(Gravity.LEFT);
 
         return true;
     }
