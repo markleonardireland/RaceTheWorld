@@ -150,6 +150,7 @@ public class SearchUser extends AppCompatActivity {
                     intent.putExtra("email", mEmail);
                     mView.getContext().startActivity(intent);
                     Activity act = (Activity) mView.getContext();
+                    act.finish();
 
 
 
