@@ -224,7 +224,7 @@ public class RaceActivity extends AppCompatActivity implements GoogleApiClient.C
         int timeMinutes = (int)mOpponent.currentTime / 60;
         int timeSeconds = (int)mOpponent.currentTime % 60;
         mOppTime.setText(String.format("%d:%d", timeMinutes, timeSeconds));
-        
+
         mOppDistance.setText(String.format("%4.2f", distanceKm));
 
 
@@ -411,6 +411,10 @@ public class RaceActivity extends AppCompatActivity implements GoogleApiClient.C
 
 
     private void finishRace() {
+        // Stop listening
+        Log.e("finishRace", "Removing Event Listener");
+        mReference.removeEventListener(mEventListener);
+
         // Start the new Intent
         mHelper.resetReadyState(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
