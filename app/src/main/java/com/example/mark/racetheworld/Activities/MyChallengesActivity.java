@@ -121,6 +121,7 @@ public class MyChallengesActivity extends AppCompatActivity {
                     FirebaseDBHelper helper = new FirebaseDBHelper();
                     helper.setReadyState(FirebaseAuth.getInstance().getCurrentUser().getUid());
                     mView.getContext().startActivity(intent);
+                    ((Activity)mView.getContext()).finish();
 
                 }
             });
